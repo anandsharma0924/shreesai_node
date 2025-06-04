@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.post('/', authMiddleware, propertyController.addProperty);
 
 // Public: Get all properties
-router.get('/', propertyController.getProperties);
+router.get('/', propertyController.getProperties);   // /api/properties
 
 // Public: Get property by ID
 router.get('/:id', propertyController.getProperty);
