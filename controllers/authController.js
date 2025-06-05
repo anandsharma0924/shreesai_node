@@ -3,7 +3,9 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const User = require("../models/user");
 
-const client = new OAuth2Client("290076810108-hmb0b6gipqv5jd3acet375m05huqmrqg.apps.googleusercontent.com");
+const client = new OAuth2Client(
+  "290076810108-hmb0b6gipqv5jd3acet375m05huqmrqg.apps.googleusercontent.com"
+);
 
 exports.register = async (req, res) => {
   const { username, email, password, googleId, name, googleToken } = req.body;
@@ -13,7 +15,8 @@ exports.register = async (req, res) => {
       // Handle Google signup
       const ticket = await client.verifyIdToken({
         idToken: googleToken,
-        audience: "290076810108-hmb0b6gipqv5jd3acet375m05huqmrqg.apps.googleusercontent.com",
+        audience:
+          "290076810108-hmb0b6gipqv5jd3acet375m05huqmrqg.apps.googleusercontent.com",
       });
       const payload = ticket.getPayload();
 
@@ -23,7 +26,9 @@ exports.register = async (req, res) => {
 
       let user = await User.findOne({ where: { googleId } });
       if (user) {
-        return res.status(400).json({ error: "Google account already registered" });
+        return res
+          .status(400)
+          .json({ error: "Google account already registered" });
       }
 
       // Check if email is already used
@@ -41,15 +46,24 @@ exports.register = async (req, res) => {
       });
 
       const token = jwt.sign(
-        { id: user.id, email: user.email, name: user.username, picture: user.profilePicture },
+        {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture,
+        },
         process.env.JWT_SECRET || "your_jwt_secret",
-        { expiresIn: "1h" }
       );
 
       return res.status(201).json({
         message: "User registered successfully with Google",
         token,
-        user: { id: user.id, email: user.email, name: user.username, picture: user.profilePicture },
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture,
+        },
       });
     } else if (username && email && password) {
       // Handle email/password signup (unchanged)
@@ -66,22 +80,33 @@ exports.register = async (req, res) => {
       });
 
       const token = jwt.sign(
-        { id: user.id, email: user.email, name: user.username, picture: user.profilePicture || null },
+        {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture || null,
+        },
         process.env.JWT_SECRET || "your_jwt_secret",
-        { expiresIn: "1h" }
       );
 
       return res.status(201).json({
-        message: "User registered successfully",
+        message: "registered successfully",
         token,
-        user: { id: user.id, email: user.email, name: user.username, picture: user.profilePicture || null },
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture || null,
+        },
       });
     } else {
       return res.status(400).json({ error: "Invalid registration request" });
     }
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ error: "Error registering user", details: error.message });
+    res
+      .status(500)
+      .json({ error: "Error registering user", details: error.message });
   }
 };
 
@@ -93,7 +118,8 @@ exports.login = async (req, res) => {
       // Handle Google login
       const ticket = await client.verifyIdToken({
         idToken: googleToken,
-        audience: "290076810108-hmb0b6gipqv5jd3acet375m05huqmrqg.apps.googleusercontent.com",
+        audience:
+          "139761323520-pvud9icj7rnuplas6c2cfdfs2k55d7k3.apps.googleusercontent.com",
       });
       const payload = ticket.getPayload();
 
@@ -120,15 +146,24 @@ exports.login = async (req, res) => {
       }
 
       const token = jwt.sign(
-        { id: user.id, email: user.email, name: user.username, picture: user.profilePicture },
+        {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture,
+        },
         process.env.JWT_SECRET || "your_jwt_secret",
-        { expiresIn: "1h" }
       );
 
       return res.status(200).json({
         message: "Google login successful",
         token,
-        user: { id: user.id, email: user.email, name: user.username, picture: user.profilePicture },
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture,
+        },
       });
     } else if (email && password) {
       // Handle email/password login
@@ -138,7 +173,9 @@ exports.login = async (req, res) => {
       }
 
       if (!user.password) {
-        return res.status(401).json({ error: "Account registered with Google. Use Google login." });
+        return res
+          .status(401)
+          .json({ error: "Account registered with Google. Use Google login." });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
@@ -147,15 +184,24 @@ exports.login = async (req, res) => {
       }
 
       const token = jwt.sign(
-        { id: user.id, email: user.email, name: user.username, picture: user.profilePicture || null },
+        {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture || null,
+        },
         process.env.JWT_SECRET || "your_jwt_secret",
-        { expiresIn: "1h" }
       );
 
       return res.status(200).json({
         message: "Login successful",
         token,
-        user: { id: user.id, email: user.email, name: user.username, picture: user.profilePicture || null },
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          picture: user.profilePicture || null,
+        },
       });
     } else {
       return res.status(400).json({ error: "Invalid login request" });
