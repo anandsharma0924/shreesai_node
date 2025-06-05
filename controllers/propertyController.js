@@ -127,11 +127,11 @@ exports.addProperty = [
       if (error.message.includes("multer")) {
         return res
           .status(400)
-          .json({ error: "File upload error", details: error.message });
+          .json({ error: "File upload error", details: error });
       }
       return res
         .status(500)
-        .json({ error: "Internal server error", details: error.message });
+        .json({ error: "Internal server error", details: error });
     }
   },
 ];
@@ -147,7 +147,7 @@ exports.getPropertyById = async (req, res) => {
     console.error("Error fetching property:", error);
     res
       .status(500)
-      .json({ error: "Failed to fetch property", details: error.message });
+      .json({ error: "Failed to fetch property", details: error });
   }
 };
 
@@ -159,7 +159,7 @@ exports.getProperties = async (req, res) => {
     console.error("Error fetching properties:", error);
     res
       .status(500)
-      .json({ error: "Failed to fetch properties", details: error.message });
+      .json({ error: "Failed to fetch properties", details: error });
   }
 };
 exports.getProperties = async (req, res) => {
@@ -178,7 +178,7 @@ exports.getProperty = async (req, res) => {
     if (!property) return res.status(404).json({ error: "Property not found" });
     res.json(property);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching property" });
+    res.status(500).json({ error: "Error fetching property",details: error });
   }
 };
 

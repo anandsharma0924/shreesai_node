@@ -33,7 +33,7 @@ exports.deleteSingleNumber = async (req, res) => {
       res.status(404).json({ error: 'Number not found' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Error deleting number', details: error.message });
+    res.status(500).json({ error: 'Error deleting number', details: error });
   }
 };
 
@@ -48,6 +48,6 @@ exports.deleteAllNumbers = async (req, res) => {
       res.status(404).json({ error: 'No numbers found to delete' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Error deleting numbers', details: error.message });
+    res.status(500).json({ error: 'Error deleting numbers', details: error });
   }
 };

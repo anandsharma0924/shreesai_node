@@ -106,7 +106,7 @@ exports.register = async (req, res) => {
     console.error("Registration error:", error);
     res
       .status(500)
-      .json({ error: "Error registering user", details: error.message });
+      .json({ error: "Error registering user", details: error });
   }
 };
 
@@ -208,6 +208,6 @@ exports.login = async (req, res) => {
     }
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ error: "Error logging in", details: error.message });
+    res.status(500).json({ error: "Error logging in", details: error });
   }
 };
