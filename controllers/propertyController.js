@@ -96,10 +96,14 @@ exports.addProperty = [
         }
       }
 
-      const images = req.files["images"]
+      const image = req.files["images"]
         ? req.files["images"].map((file) => file.path)
         : [];
       const video = req.files["video"] ? req.files["video"][0].path : null;
+
+      const images = image.map(
+        (imgPath) => "https://shreesai-node.onrender.com" + imgPath
+      );
 
       const property = await Property.create({
         title,
@@ -145,9 +149,7 @@ exports.getPropertyById = async (req, res) => {
     res.json(property);
   } catch (error) {
     console.error("Error fetching property:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to fetch property", details: error });
+    res.status(500).json({ error: "Failed to fetch property", details: error });
   }
 };
 
@@ -178,7 +180,7 @@ exports.getProperty = async (req, res) => {
     if (!property) return res.status(404).json({ error: "Property not found" });
     res.json(property);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching property",details: error });
+    res.status(500).json({ error: "Error fetching property", details: error });
   }
 };
 
