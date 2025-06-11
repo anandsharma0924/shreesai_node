@@ -102,7 +102,7 @@ exports.addProperty = [
       const video = req.files["video"] ? req.files["video"][0].path : null;
 
       const images = image.map(
-        (imgPath) => "https://shreesai-node.onrender.com" + imgPath
+        (imgPath) => "https://shreesai-node.onrender.com/" + imgPath
       );
 
       const property = await Property.create({
